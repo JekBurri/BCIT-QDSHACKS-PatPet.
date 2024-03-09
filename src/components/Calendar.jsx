@@ -39,23 +39,32 @@ export default function Calendar() {
   }, [events]);
 
   return (
-    <div className="p-2 flex flex-col gap-4">
-      <form onSubmit={addEvent} className="flex gap-2">
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date) => setSelectedDate(date)}
-          customInput={<input className="border rounded-md" />}
-        />
-        <input
-          type="text"
-          value={event}
-          onChange={(e) => setEvent(e.target.value)}
-          placeholder="Add Event"
-          className="border rounded-md"
-        />
-        <button type="submit" className="border rounded-md p-1">
-          Add Event
-        </button>
+    <div className="flex flex-col gap-4">
+      <form onSubmit={addEvent} className="grid grid-cols-12 gap-2">
+        <div className="col-span-12 md:col-span-5">
+        <p>Date</p>
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            customInput={<input className="input -text--primary/35" />}
+          />
+        </div>
+        <div className="col-span-12 md:col-span-7">
+          <label>Event Title (Exam/Assignment)</label>
+          <div className="flex">
+            <input
+              type="text"
+              value={event}
+              onChange={(e) => setEvent(e.target.value)}
+              placeholder="Add Event"
+              className="input mr-2 mb-2"
+            />
+            <button type="submit" className="btn px-3 py-2">
+              Add
+            </button>
+          </div>
+        </div>
+        
       </form>
     </div>
   );

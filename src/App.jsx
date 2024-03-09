@@ -2,11 +2,14 @@ import { useState } from "react";
 import Chatbot from "./components/Chat";
 import PetCanvas from "./components/PetCanvas";
 import Calendar from "./components/Calendar";
+import DatePicker from "react-datepicker";
 
 function App() {
   const [username, setUsername] = useState("");
   const [petname, setPetname] = useState("");
   const [programName, setProgramName] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedSchDate, setSelectedSchDate] = useState(new Date());
   const [showCreatePetForm, setShowCreatePetForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     const storedUsername = localStorage.getItem("username");
@@ -35,7 +38,7 @@ function App() {
   if (!isLoggedIn) {
     return (
       <div className="h-svh w-full flex justify-center items-center">
-      <div className="login-container max-w-[700px] w-2/3 m-auto md:w-1/2 ">
+      <div className="login-container max-w-[700px] w-2/3 m-auto lg:w-1/2 ">
         <h1>PATPET</h1>
         <form onSubmit={handleLogin} className="flex flex-col space-y-8 mt-10">
           <div className="flex flex-col">
@@ -71,10 +74,22 @@ function App() {
                 required
             />
           </div>
+          <div className="flex flex-col">
+            <label>Expected Graduation</label>
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              customInput={<input className="input w-full mt-2 -text--primary/35" />}
+              className=" w-full"
+            />
+          </div>
+          <div className="flex flex-col">
+            <p>Your schedule</p>
+            <Calendar />
+          </div>
             <button type="submit" className="btn">
               Create Pet
             </button>
-
         </form>
       </div>
     </div>
