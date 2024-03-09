@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Chatbot from "./components/chat";
 import Schedule from "./components/Schedule";
-
+import PetCanvas from "./components/petCanvas";
 function App() {
   const [username, setUsername] = useState("");
   const [petname, setPetname] = useState("");
@@ -80,6 +80,9 @@ function App() {
           <p>Your pet&apos;s name is: {localStorage.getItem("petname")}</p>
         </div>
       )}
+      <div>
+        <PetCanvas />
+      </div>
       {/* Render the Chatbot component */}
       <Chatbot />
       <div>
