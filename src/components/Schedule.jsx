@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 
 export default function Schedule() {
   const [schedule, setSchedule] = useState({
@@ -13,23 +13,28 @@ export default function Schedule() {
 
   return (
     <div className="p-2 flex flex-col gap-4">
-      <p className='text-lg mb-2'>Your Schedule</p>
+      <p className="text-lg mb-2">Your Schedule</p>
       {Object.keys(schedule).map((day) => (
         <div key={day} className="flex items-center gap-4">
-          <p className="w-20 text-left">{day.charAt(0).toUpperCase() + day.slice(1)}</p>
+          <p className="w-20 text-left">
+            {day.charAt(0).toUpperCase() + day.slice(1)}
+          </p>
           <div className="flex gap-4">
             {Object.keys(schedule[day]).map((time) => (
               <p
                 key={time}
                 className={`px-6 rounded-md ${
                   schedule[day][time]
-                    ? 'bg-[#FFC63A] border border-[#FFC63A]'
-                    : 'bg-white border border-black'
+                    ? "bg-[#FFC63A] border border-[#FFC63A]"
+                    : "bg-white border border-black"
                 }`}
                 onClick={() =>
                   setSchedule((prevSchedule) => ({
                     ...prevSchedule,
-                    [day]: { ...prevSchedule[day], [time]: !prevSchedule[day][time] },
+                    [day]: {
+                      ...prevSchedule[day],
+                      [time]: !prevSchedule[day][time],
+                    },
                   }))
                 }
               >

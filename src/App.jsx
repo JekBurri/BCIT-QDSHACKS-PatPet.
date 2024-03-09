@@ -1,6 +1,51 @@
 import { useState } from "react";
-import Chatbot from "./chat";
+import Chatbot from "./components/chat";
+import Schedule from "./components/Schedule";
+
 function App() {
+  const [username, setUsername] = useState("");
+  const [petname, setPetname] = useState("");
+  const [showCreatePetForm, setShowCreatePetForm] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const storedUsername = localStorage.getItem("username");
+    return !!storedUsername;
+  });
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    localStorage.setItem("username", username);
+    setIsLoggedIn(true);
+  };
+
+  const createPet = (e) => {
+    e.preventDefault();
+    localStorage.setItem("petname", petname);
+    setShowCreatePetForm(false);
+  };
+
+  const toggleCreatePetForm = () => {
+    setShowCreatePetForm((prev) => !prev);
+  };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="login-container max-w-xs mx-auto pt-8">
+        <form onSubmit={handleLogin} className="flex flex-col space-y-2">
+          <input
+            type="text"
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="input"
+            required
+          />
+          <button type="submit" className="btn">
+            Login
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -37,6 +82,9 @@ function App() {
       )}
       {/* Render the Chatbot component */}
       <Chatbot />
+      <div>
+        <Schedule />
+      </div>
     </>
   );
 }
