@@ -6,7 +6,7 @@ import { faGlassWater, faUtensils, faBed, faGamepad } from '@fortawesome/free-so
 export default function ActionButtonBar(){
     return(
         <div className='w-full bg-slate-400 py-4'>
-            <div className=' w-1/2 mx-auto flex justify-between'>
+            <div className='w-full mx-4 flex justify-center gap-4'>
                 <button 
                     className='action-button'
                     onClick={() => console.log('Button clicked!')}
