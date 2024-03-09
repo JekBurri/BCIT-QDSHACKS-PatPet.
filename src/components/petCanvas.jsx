@@ -1,28 +1,31 @@
 import { useRef, useEffect, useState } from "react";
+import axios from "axios";
 
 const PetCanvas = () => {
   const canvasRef = useRef(null);
   const [dogPosition, setDogPosition] = useState({ x: 50, y: 50 });
   const dogSize = { width: 200, height: 200 };
-  const [greeting, setGreeting] = useState("");
+  const [randomEvent, setRandomEvent] = useState(null);
+  const [events, setEvents] = useState([]);
 
-  const greetings = [
-    "Hello!",
-    "Woof!",
-    "How are you?",
-    "Good dog!",
-    "Let's play!",
-  ];
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get("/api/events");
+        setEvents(response.data);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     const image = new Image();
-
     image.src = `/dog.svg`;
-    image.onload = () => {
-      drawDog(image);
-    };
 
     const drawDog = (img) => {
       context.clearRect(0, 0, canvas.width, canvas.height);
@@ -34,14 +37,18 @@ const PetCanvas = () => {
         dogSize.height
       );
 
-      if (greeting) {
+      if (randomEvent) {
         context.font = "16px Arial";
         context.fillText(
-          greeting,
+          `${randomEvent.title} on ${randomEvent.date}`,
           dogPosition.x + dogSize.width + 10,
           dogPosition.y + dogSize.height / 2
         );
       }
+    };
+
+    image.onload = () => {
+      drawDog(image);
     };
 
     const moveDogRandomly = () => {
@@ -72,21 +79,21 @@ const PetCanvas = () => {
         y >= dogPosition.y &&
         y <= dogPosition.y + dogSize.height
       ) {
-        const randomGreeting =
-          greetings[Math.floor(Math.random() * greetings.length)];
-        setGreeting(randomGreeting);
+        if (events.length > 0) {
+          const randomIndex = Math.floor(Math.random() * events.length);
+          setRandomEvent(events[randomIndex]);
+        }
       }
     };
 
     canvas.addEventListener("click", handleCanvasClick);
-
     const intervalId = setInterval(moveDogRandomly, 1000);
 
     return () => {
       clearInterval(intervalId);
       canvas.removeEventListener("click", handleCanvasClick);
     };
-  }, [dogPosition, greeting]);
+  }, [dogPosition, events]);
 
   return (
     <canvas

@@ -1,64 +1,54 @@
-import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-
 import express from "express";
+import fs from "fs";
+import path from "path";
+import "dotenv/config";
 
 const app = express();
-
 app.use(express.json());
 
 const PORT = 8000;
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const DATA_FILE_PATH = path.join(__dirname, "data.json");
 
-app.get("/", async (req, res) => {
-  res.send("Hello World!");
-});
-app.get("/users", async (req, res) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
-});
-
-app.post("/users", async (req, res) => {
+const readData = () => {
   try {
-    const { name } = req.body;
-    const newUser = await prisma.user.create({
-      data: {
-        name,
-      },
-    });
-    res.json(newUser);
+    const data = fs.readFileSync(DATA_FILE_PATH, "utf-8");
+    return JSON.parse(data);
   } catch (error) {
-    console.error("Failed to create a new user:", error);
-    res.status(500).json({ error: "Failed to create a new user" });
+    console.error("Error reading data file:", error);
+    return null; 
+  }
+};
+
+const writeData = (data) => {
+  try {
+    fs.writeFileSync(DATA_FILE_PATH, JSON.stringify(data, null, 2), "utf-8");
+  } catch (error) {
+    console.error("Error writing to data file:", error);
+  }
+};
+
+app.post("/events", (req, res) => {
+  const { event } = req.body;
+  const data = readData();
+  if (data) {
+    data.events.push(event);
+    writeData(data);
+    res.json({ message: "Event added successfully", event });
+  } else {
+    res.status(500).json({ error: "Failed to add event" });
   }
 });
 
-app.get("/pets/:user_id", async (req, res) => {
-  const userId = parseInt(req.params.user_id);
-  const pets = await prisma.pet.findMany({
-    where: {
-      userId: userId,
-    },
-  });
-  res.json(pets);
-});
-
-app.post("/pets", async (req, res) => {
-  try {
-    const { name, userId } = req.body;
-    const newPet = await prisma.pet.create({
-      data: {
-        name,
-        userId,
-      },
-    });
-    res.json(newPet);
-  } catch (error) {
-    console.error("Failed to create a new pet:", error);
-    res.status(500).json({ error: "Failed to create a new pet" });
+app.get("/events", (req, res) => {
+  const data = readData();
+  if (data) {
+    res.json(data.events);
+  } else {
+    res.status(500).json({ error: "Failed to read events" });
   }
 });
 
 app.listen(PORT, () =>
-  console.log(`server should be running at http://localhost:${PORT}/`)
+  console.log(`Server running at http://localhost:${PORT}/`)
 );
