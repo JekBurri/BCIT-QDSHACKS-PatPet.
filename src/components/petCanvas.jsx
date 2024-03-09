@@ -1,18 +1,27 @@
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 
-const PetCanvas = () => {
+const PetCanvas = ({ initialImage }) => {
   const canvasRef = useRef(null);
   const [dogPosition, setDogPosition] = useState({ x: 50, y: 50 });
   const dogSize = { width: 200, height: 200 };
   const [randomEvent, setRandomEvent] = useState(null);
   const [events, setEvents] = useState([]);
+  const [specialEvent, setSpecialEvent] = useState([]);
+  const [currentSpecialEvent, setCurrentSpecialEvent] = useState(null);
+  const [currentImage, setCurrentImage] = useState("/dog.svg");
+  const originalImage = "/dog.svg";
+
+  useEffect(() => {
+    setCurrentImage(initialImage || "/dog.svg");
+  }, [initialImage]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get("/api/events");
-        setEvents(response.data);
+        setEvents(response.data.events);
+        setSpecialEvent(response.data.specialEvents);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -25,7 +34,7 @@ const PetCanvas = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     const image = new Image();
-    image.src = `/dog.svg`;
+    image.src = currentImage;
 
     const drawDog = (img) => {
       context.clearRect(0, 0, canvas.width, canvas.height);
@@ -44,6 +53,21 @@ const PetCanvas = () => {
           dogPosition.x + dogSize.width + 10,
           dogPosition.y + dogSize.height / 2
         );
+      }
+
+      if (currentSpecialEvent) {
+        const eventText = Object.values(currentSpecialEvent)[1];
+        context.fillText(
+          eventText,
+          dogPosition.x + dogSize.width + 10,
+          dogPosition.y + dogSize.height / 2 + 20
+        );
+
+        if (eventText === "I'm sleepy...") {
+          setCurrentImage("/sleepy-cat.jpg");
+        } else if (eventText === "I'm hungry!") {
+          setCurrentImage("/hungry-cat.png"); // Change the image to hungry-cat.png
+        }
       }
     };
 
@@ -73,15 +97,19 @@ const PetCanvas = () => {
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
 
+      if (events.length > 0) {
+        const randomIndex = Math.floor(Math.random() * events.length);
+        setRandomEvent(events[randomIndex]);
+      }
+
       if (
         x >= dogPosition.x &&
         x <= dogPosition.x + dogSize.width &&
         y >= dogPosition.y &&
         y <= dogPosition.y + dogSize.height
       ) {
-        if (events.length > 0) {
-          const randomIndex = Math.floor(Math.random() * events.length);
-          setRandomEvent(events[randomIndex]);
+        if (currentImage !== originalImage) {
+          setCurrentImage(originalImage);
         }
       }
     };
@@ -93,7 +121,25 @@ const PetCanvas = () => {
       clearInterval(intervalId);
       canvas.removeEventListener("click", handleCanvasClick);
     };
-  }, [dogPosition, events]);
+  }, [
+    dogPosition,
+    events,
+    randomEvent,
+    currentSpecialEvent,
+    currentImage,
+    originalImage,
+  ]);
+
+  useEffect(() => {
+    const specialEventInterval = setInterval(() => {
+      if (specialEvent.length > 0) {
+        const randomIndex = Math.floor(Math.random() * specialEvent.length);
+        setCurrentSpecialEvent(specialEvent[randomIndex]);
+      }
+    }, 5000);
+
+    return () => clearInterval(specialEventInterval);
+  }, [specialEvent]);
 
   return (
     <canvas
