@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Schedule() {
+export default function Schedule({ username, petname }) {
   const [schedule, setSchedule] = useState({
     monday: { morning: false, afternoon: false, evening: false },
     tuesday: { morning: false, afternoon: false, evening: false },
@@ -13,6 +13,8 @@ export default function Schedule() {
 
   return (
     <div className="p-2 flex flex-col gap-4">
+      <p>Welcome {username} !</p>
+      <p>Please let {petname} know your availablity!</p>
       <p className="text-lg mb-2">Your Schedule</p>
       {Object.keys(schedule).map((day) => (
         <div key={day} className="flex items-center gap-4">
@@ -44,6 +46,7 @@ export default function Schedule() {
           </div>
         </div>
       ))}
+      <button className="btn">Let get started</button>
     </div>
   );
 }
