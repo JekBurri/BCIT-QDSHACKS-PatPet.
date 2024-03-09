@@ -18,23 +18,20 @@ function Chat() {
 
     const userMessage = { role: "user", content: input };
 
-    // Add the user's message to the messages array for display but don't directly modify the state yet
     const updatedMessages = messages.concat(userMessage);
 
     try {
       const completion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
-        // When sending messages to OpenAI, filter out system messages and replace 'bot' role with 'assistant'
         messages: updatedMessages.map((msg) => ({
           role: msg.role === "bot" ? "assistant" : msg.role,
           content: msg.content,
         })),
       });
 
-      // Now, update the messages state including the bot's response with the correct role for display
       setMessages([
         ...updatedMessages,
-        { role: "bot", content: completion.choices[0].message.content }, // Keep using 'bot' for internal state for display purposes
+        { role: "bot", content: completion.choices[0].message.content },
       ]);
     } catch (error) {
       console.error("Error fetching response from OpenAI:", error);

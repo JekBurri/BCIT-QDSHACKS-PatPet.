@@ -1,7 +1,9 @@
 import { useState } from "react";
-import Chatbot from "./components/chat";
+import Chatbot from "./components/Chat";
 import Schedule from "./components/Schedule";
-import PetCanvas from "./components/petCanvas";
+import PetCanvas from "./components/PetCanvas";
+import Calendar from "./components/Calendar";
+
 function App() {
   const [username, setUsername] = useState("");
   const [petname, setPetname] = useState("");
@@ -87,6 +89,9 @@ function App() {
       <Chatbot />
       <div>
         <Schedule />
+      </div>
+      <div>
+        <Calendar />
       </div>
     </>
   );
