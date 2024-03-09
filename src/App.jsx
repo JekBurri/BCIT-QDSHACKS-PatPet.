@@ -15,13 +15,15 @@ function App() {
     e.preventDefault();
     localStorage.setItem("username", username);
     setIsLoggedIn(true);
-  };
-
-  const createPet = (e) => {
-    e.preventDefault();
     localStorage.setItem("petname", petname);
     setShowCreatePetForm(false);
   };
+
+  // const createPet = (e) => {
+  //   e.preventDefault();
+  //   localStorage.setItem("petname", petname);
+  //   setShowCreatePetForm(false);
+  // };
 
   const toggleCreatePetForm = () => {
     setShowCreatePetForm((prev) => !prev);
@@ -39,9 +41,17 @@ function App() {
             className="input"
             required
           />
-          <button type="submit" className="btn">
-            Login
-          </button>
+          <input
+              type="text"
+              placeholder="Enter your pet's name"
+              value={petname}
+              onChange={(e) => setPetname(e.target.value)}
+              className="input"
+              required
+            />
+            <button type="submit" className="btn">
+              Confirm
+            </button>
         </form>
       </div>
     );
@@ -62,23 +72,6 @@ function App() {
           </button>
         )}
       </div>
-      {showCreatePetForm && !localStorage.getItem("petname") && (
-        <div className="login-container max-w-xs mx-auto pt-8">
-          <form onSubmit={createPet} className="flex flex-col space-y-2">
-            <input
-              type="text"
-              placeholder="Enter your pet's name"
-              value={petname}
-              onChange={(e) => setPetname(e.target.value)}
-              className="input"
-              required
-            />
-            <button type="submit" className="btn">
-              Confirm
-            </button>
-          </form>
-        </div>
-      )}
       {/* Optionally display the pet's name if it exists */}
       {localStorage.getItem("petname") && (
         <div className="card">
