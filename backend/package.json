@@ -1,20 +1,24 @@
 {
-  "name": "my-app",
-  "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "aws-sdk": "latest",
-    "axios": "^1.6.7",
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "ejs": "latest",
-    "express": "^4.18.3",
-    "mysql2": "^3.9.1",
-    "nodemon": "^3.1.0",
-    "openai": "^4.28.4"
-  },
+  "name": "backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.10.2",
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "openai": "^4.28.4",
+    "postgres": "^3.4.3"
+  },
+  "devDependencies": {
+    "prisma": "^5.10.2"
   }
 }

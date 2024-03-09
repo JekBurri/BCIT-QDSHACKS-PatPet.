@@ -1,35 +1,64 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
+import "dotenv/config";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
-const OpenAIApi = require("openai");
-const Configuration = require("openai");
-
-const config = new Configuration({
-  apiKey: "",
-});
-
-const openai = new OpenAIApi(config);
+import express from "express";
 
 const app = express();
-app.use(bodyParser.json());
-app.use(cors());
 
-app.post("/chat", async (req, res) => {
-  const { prompt } = req.body;
+app.use(express.json());
 
-  const completion = await openai.createChatCompletion({
-    model: "text-davinci-003",
-    maxtokens: 512,
-    temperature: 0,
-    prompt: prompt,
+const PORT = 8000;
+
+app.get("/", async (req, res) => {
+  res.send("Hello World!");
+});
+app.get("/users", async (req, res) => {
+  const users = await prisma.user.findMany();
+  res.json(users);
+});
+
+app.post("/users", async (req, res) => {
+  try {
+    const { name } = req.body;
+    const newUser = await prisma.user.create({
+      data: {
+        name,
+      },
+    });
+    res.json(newUser);
+  } catch (error) {
+    console.error("Failed to create a new user:", error);
+    res.status(500).json({ error: "Failed to create a new user" });
+  }
+});
+
+app.get("/pets/:user_id", async (req, res) => {
+  const userId = parseInt(req.params.user_id);
+  const pets = await prisma.pet.findMany({
+    where: {
+      userId: userId,
+    },
   });
-
-  res.send(completion.data.choices[0].text);
+  res.json(pets);
 });
 
-const port = 3000;
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.post("/pets", async (req, res) => {
+  try {
+    const { name, userId } = req.body;
+    const newPet = await prisma.pet.create({
+      data: {
+        name,
+        userId,
+      },
+    });
+    res.json(newPet);
+  } catch (error) {
+    console.error("Failed to create a new pet:", error);
+    res.status(500).json({ error: "Failed to create a new pet" });
+  }
 });
+
+app.listen(PORT, () =>
+  console.log(`server should be running at http://localhost:${PORT}/`)
+);
