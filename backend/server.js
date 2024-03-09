@@ -16,7 +16,7 @@ const readData = () => {
     return JSON.parse(data);
   } catch (error) {
     console.error("Error reading data file:", error);
-    return null; 
+    return null;
   }
 };
 
@@ -43,7 +43,7 @@ app.post("/events", (req, res) => {
 app.get("/events", (req, res) => {
   const data = readData();
   if (data) {
-    res.json(data.events);
+    res.json(data);
   } else {
     res.status(500).json({ error: "Failed to read events" });
   }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Chatbot from "./components/Chat";
 import PetCanvas from "./components/PetCanvas";
 import Calendar from "./components/Calendar";
@@ -16,6 +16,7 @@ function App() {
     return !!storedUsername;
   });
   const [showChatbot, setShowChatbot] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const toggleChatbot = () => {
     setShowChatbot(!showChatbot);
@@ -26,6 +27,7 @@ function App() {
     localStorage.setItem("username", username);
     setIsLoggedIn(true);
     localStorage.setItem("petname", petname);
+    localStorage.setItem("selectedImage", selectedImage);
     setShowCreatePetForm(false);
     localStorage.setItem("program", programName);
   };
@@ -34,6 +36,10 @@ function App() {
   const toggleCreatePetForm = () => {
     setShowCreatePetForm((prev) => !prev);
   };
+
+  useEffect(() => {
+    setSelectedImage(localStorage.getItem("selectedImage")); // Retrieve the selected image from localStorage
+  }, []);
 
   if (!isLoggedIn) {
     return (
@@ -107,14 +113,46 @@ function App() {
           </button>
         )}
       </div>
-      {localStorage.getItem("petname") && (
-        <div className="card">
-          <p>Your pet&apos;s name is: {localStorage.getItem("petname")}</p>
+
+      {showCreatePetForm && !localStorage.getItem("petname") && (
+        <div className="login-container max-w-xs mx-auto pt-8">
+          <form onSubmit={createPet} className="flex flex-col space-y-2">
+            <input
+              type="text"
+              placeholder="Enter your pet's name"
+              value={petname}
+              onChange={(e) => setPetname(e.target.value)}
+              className="input"
+              required
+            />
+            <label
+              htmlFor="image"
+              className="text-sm font-medium text-gray-700"
+            >
+              Select the initial image for your pet:
+            </label>
+            <select
+              id="image"
+              value={selectedImage}
+              onChange={(e) => setSelectedImage(e.target.value)}
+              className="input"
+              required
+            >
+              <option value="/dog.svg">Dog</option>
+              <option value="/sleepy-cat.jpg">Sleepy Cat</option>
+              <option value="/hungry-cat.png">Hungry Cat</option>
+            </select>
+            <button type="submit" className="btn">
+              Confirm
+            </button>
+          </form>
         </div>
       )}
-      <div>
-        <PetCanvas />
-      </div>
+      {localStorage.getItem("petname") && selectedImage && (
+        <div>
+          <PetCanvas initialImage={selectedImage} />
+        </div>
+      )}
       {showChatbot && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <div className="relative bg-white p-6 rounded shadow-lg max-w-md w-full">
