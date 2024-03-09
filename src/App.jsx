@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import ActionButtonBar from "./shared/ActionButtonBar";
+
 function App() {
   const [username, setUsername] = useState("");
   const [petname, setPetname] = useState("");
@@ -47,6 +49,9 @@ function App() {
 
   return (
     <>
+      <div>
+        <ActionButtonBar />
+      </div>
       <h1 className="text-center text-4xl">Pat Pet</h1>
       <div className="card">
         <p>Welcome, {localStorage.getItem("username")}!</p>
