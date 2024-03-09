@@ -19,40 +19,44 @@ function App() {
     setShowCreatePetForm(false);
   };
 
-  // const createPet = (e) => {
-  //   e.preventDefault();
-  //   localStorage.setItem("petname", petname);
-  //   setShowCreatePetForm(false);
-  // };
-
   const toggleCreatePetForm = () => {
     setShowCreatePetForm((prev) => !prev);
   };
 
   if (!isLoggedIn) {
     return (
-      <div className="login-container max-w-xs mx-auto pt-8">
-        <form onSubmit={handleLogin} className="flex flex-col space-y-2">
-          <input
-            type="text"
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="input"
-            required
-          />
-          <input
-              type="text"
-              placeholder="Enter your pet's name"
-              value={petname}
-              onChange={(e) => setPetname(e.target.value)}
-              className="input"
-              required
-            />
-            <button type="submit" className="btn">
-              Confirm
-            </button>
-        </form>
+      <div className="h-svh w-full flex justify-center items-center">
+        <div className="login-container max-w-[700px] w-2/3 m-auto md:w-1/2 ">
+          <h1>PATPET</h1>
+          <form onSubmit={handleLogin} className="flex flex-col space-y-8 mt-10">
+            <div className="flex flex-col">
+              <label>Your Name</label>
+              <input
+                type="text"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="input mt-2"
+                required
+              />
+            </div>
+            <div className="flex flex-col">
+              <label>Your Pet Name</label>
+              <input
+                  type="text"
+                  placeholder="Enter your pet's name"
+                  value={petname}
+                  onChange={(e) => setPetname(e.target.value)}
+                  className="input mt-2"
+                  required
+              />
+            </div>
+              <button type="submit" className="btn">
+                Create Pet
+              </button>
+
+          </form>
+        </div>
       </div>
     );
   }
