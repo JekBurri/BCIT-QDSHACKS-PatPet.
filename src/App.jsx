@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Chatbot from "./components/chat";
+import Schedule from "./components/Schedule";
 
 import ActionButtonBar from "./shared/ActionButtonBar";
 
@@ -69,7 +71,6 @@ function App() {
       <h1 className="text-center text-4xl">Pat Pet</h1>
       <div className="card">
         <p>Welcome, {localStorage.getItem("username")}!</p>
-        {/* Button to toggle the create pet form */}
         {!localStorage.getItem("petname") && (
           <button onClick={toggleCreatePetForm} className="btn">
             {showCreatePetForm ? "Cancel" : "Create Pet"}
@@ -79,9 +80,14 @@ function App() {
       {/* Optionally display the pet's name if it exists */}
       {localStorage.getItem("petname") && (
         <div className="card">
-          <p>Your pet's name is: {localStorage.getItem("petname")}</p>
+          <p>Your pet&apos;s name is: {localStorage.getItem("petname")}</p>
         </div>
       )}
+      {/* Render the Chatbot component */}
+      <Chatbot />
+      <div>
+        <Schedule />
+      </div>
     </>
   );
 }
