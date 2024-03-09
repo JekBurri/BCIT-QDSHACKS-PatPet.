@@ -1,32 +1,85 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [username, setUsername] = useState("");
+  const [petname, setPetname] = useState("");
+  const [showCreatePetForm, setShowCreatePetForm] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const storedUsername = localStorage.getItem("username");
+    return !!storedUsername;
+  });
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    localStorage.setItem("username", username);
+    setIsLoggedIn(true);
+  };
+
+  const createPet = (e) => {
+    e.preventDefault();
+    localStorage.setItem("petname", petname);
+    setShowCreatePetForm(false);
+  };
+
+  const toggleCreatePetForm = () => {
+    setShowCreatePetForm((prev) => !prev);
+  };
+
+  if (!isLoggedIn) {
+    return (
+      <div className="login-container max-w-xs mx-auto pt-8">
+        <form onSubmit={handleLogin} className="flex flex-col space-y-2">
+          <input
+            type="text"
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="input"
+            required
+          />
+          <button type="submit" className="btn">
+            Login
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1 className="text-center text-4xl">Pat Pet</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <p>Welcome, {localStorage.getItem("username")}!</p>
+        {/* Button to toggle the create pet form */}
+        {!localStorage.getItem("petname") && (
+          <button onClick={toggleCreatePetForm} className="btn">
+            {showCreatePetForm ? "Cancel" : "Create Pet"}
+          </button>
+        )}
       </div>
-      <p className="text-2xl">
-        Click on the Vite and React logos to learn more
-      </p>
+      {showCreatePetForm && !localStorage.getItem("petname") && (
+        <div className="login-container max-w-xs mx-auto pt-8">
+          <form onSubmit={createPet} className="flex flex-col space-y-2">
+            <input
+              type="text"
+              placeholder="Enter your pet's name"
+              value={petname}
+              onChange={(e) => setPetname(e.target.value)}
+              className="input"
+              required
+            />
+            <button type="submit" className="btn">
+              Confirm
+            </button>
+          </form>
+        </div>
+      )}
+      {/* Optionally display the pet's name if it exists */}
+      {localStorage.getItem("petname") && (
+        <div className="card">
+          <p>Your pet's name is: {localStorage.getItem("petname")}</p>
+        </div>
+      )}
     </>
   );
 }
