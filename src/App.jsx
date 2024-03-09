@@ -9,7 +9,6 @@ function App() {
   const [petname, setPetname] = useState("");
   const [programName, setProgramName] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedSchDate, setSelectedSchDate] = useState(new Date());
   const [showCreatePetForm, setShowCreatePetForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     const storedUsername = localStorage.getItem("username");
@@ -28,6 +27,7 @@ function App() {
     localStorage.setItem("petname", petname);
     setShowCreatePetForm(false);
     localStorage.setItem("program", programName);
+    localStorage.setItem("graduation", selectedDate);
   };
 
 
@@ -79,12 +79,11 @@ function App() {
             <DatePicker
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
-              customInput={<input className="input w-full mt-2 -text--primary/35" />}
-              className=" w-full"
+              customInput={<input className="input w-full mt-2" />}
             />
           </div>
           <div className="flex flex-col">
-            <p>Your schedule</p>
+            <p className="mb-2">Your schedule</p>
             <Calendar />
           </div>
             <button type="submit" className="btn">
@@ -97,9 +96,8 @@ function App() {
   }
 
   return (
-    <>
-      <h1 className="text-center text-4xl">Pat Pet</h1>
-      <div className="card">
+    <div className="max-w-[1200px] mx-auto px-12 py-10 flex flex-col gap-6">
+      <div className="card py-4 px-14 font-bold text-3xl">
         <p>Welcome, {localStorage.getItem("username")}!</p>
         {!localStorage.getItem("petname") && (
           <button onClick={toggleCreatePetForm} className="btn">
@@ -113,6 +111,7 @@ function App() {
         </div>
       )}
       <div>
+        
         <PetCanvas />
       </div>
       {showChatbot && (
@@ -153,7 +152,7 @@ function App() {
       <div>
         <Calendar />
       </div>
-    </>
+    </div>
   );
 }
 

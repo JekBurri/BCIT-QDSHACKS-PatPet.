@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
+import ActionButtonBar from "./ActionButtonBar";
 
 const PetCanvas = () => {
   const canvasRef = useRef(null);
@@ -96,12 +97,16 @@ const PetCanvas = () => {
   }, [dogPosition, events]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={1000}
-      height={300}
-      style={{ border: "1px solid black" }}
-    ></canvas>
+    <div className="card w-full">
+      <canvas
+        ref={canvasRef}
+        width={1000}
+        height={300}
+      ></canvas>
+      <div>
+        <ActionButtonBar />
+      </div>
+    </div>
   );
 };
 
