@@ -12,7 +12,7 @@ const PetCanvas = ({ initialImage }) => {
   const [currentSpecialEvent, setCurrentSpecialEvent] = useState(null);
   const [imageChangedByEvent, setImageChangedByEvent] = useState(false);
   const [currentImage, setCurrentImage] = useState(initialImage || "/dog.svg");
-  const originalImage = initialImage || "/dog.svg";
+  const originalImage = initialImage || "/cat.svg";
   const [eventType, setEventType] = useState("");
 
   useEffect(() => {
@@ -121,17 +121,12 @@ const PetCanvas = ({ initialImage }) => {
           setEventType("sleep");
           break;
         case "I'm hungry!":
-          setCurrentImage("/hungry-cat.png");
+          setCurrentImage("/eat.svg");
           setEventType("feed");
-          break;
-        case "I'm thirsty...":
-          // Assuming you have a thirsty image
-          setCurrentImage("/sleepy-cat.jpg");
-          setEventType("water");
           break;
         case "Let's play!":
           // Assuming you have a playful image
-          setCurrentImage("/hungry-cat.png");
+          setCurrentImage("/cat-play.svg");
           setEventType("play");
           break;
         default:
@@ -152,7 +147,7 @@ const PetCanvas = ({ initialImage }) => {
 
   return (
     <div className="w-full">
-      <canvas ref={canvasRef} width={600} height={600}></canvas>
+      <canvas ref={canvasRef} width={600} height={600} className="mx-auto"></canvas>
       <div className="absolute bottom-6 left-4">
         <ActionButtonBar
           onWater={() => handleAction("water")}

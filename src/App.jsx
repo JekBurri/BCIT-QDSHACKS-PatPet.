@@ -25,6 +25,8 @@ function App() {
   const handleLogin = (e) => {
     e.preventDefault();
     localStorage.setItem("username", username);
+    localStorage.setItem("programName", programName); // Add this line
+    localStorage.setItem("graduation", selectedDate);
     setIsLoggedIn(true);
   };
 
@@ -33,8 +35,7 @@ function App() {
     localStorage.setItem("petname", petname);
     localStorage.setItem("selectedImage", selectedImage);
     setShowCreatePetForm(false);
-    localStorage.setItem("program", programName);
-    localStorage.setItem("graduation", selectedDate);
+
   };
 
   const toggleCreatePetForm = () => {
@@ -56,17 +57,19 @@ function App() {
   
   return (
     <div className="max-w-[1200px] min-w-[400px] h-screen mx-auto px-12 py-10">
-      <div className="">
-        <h1></h1>
+      <div>
         {isLoggedIn ? (
           <div className="w-full h-screen flex flex-col gap-6">
             <div className="card py-6 px-14 flex justify-between items-center font-bold text-3xl">
               <p>Welcome, {localStorage.getItem("username")}!</p>
-              {!localStorage.getItem("petname") && (
-                <button onClick={toggleCreatePetForm} className="btn text-base font-normal py-2 px-4 ">
+              <div className="flex items-center">
+                <p className="text-sm -text--primary">Graduation: {new Date(localStorage.getItem("graduation")).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                {!localStorage.getItem("petname") && (
+                <button onClick={toggleCreatePetForm} className="btn text-base font-normal py-2 px-4 ml-4">
                   {showCreatePetForm ? "Cancel" : "Create Pet"}
                 </button>
               )}
+              </div>
             </div>
             {showCreatePetForm && !localStorage.getItem("petname") && (
               <div className="card h-2/3 px-10 flex flex-col justify-center items-center">
@@ -96,9 +99,8 @@ function App() {
                       className="input"
                       required
                     >
+                      <option value="/cat.svg">Cat</option>
                       <option value="/dog.svg">Dog</option>
-                      <option value="/sleepy-cat.jpg">Sleepy Cat</option>
-                      <option value="/hungry-cat.png">Hungry Cat</option>
                     </select>
                   </div>
                   <button type="submit" className="btn">
@@ -145,13 +147,14 @@ function App() {
               onClick={toggleChatbot}
               className="action-button -bg--ternary w-20 h-20 ml-4"
               >
-                <img src="public/romance-love-letter-open.png" className='w-20' alt="chat-img"/>
+                <img src="romance-love-letter-open.png" className='w-20' alt="chat-img"/>
               Chat
               </button>
             </div>
           </div>
         ) : (
           <div className="w-full md:w-3/4 mx-auto">
+            <img src="logo.svg" className="w-72 mx-auto" alt="logo-image" />
             <form
               onSubmit={handleLogin}
               className="flex flex-col space-y-8 mt-10"
@@ -186,12 +189,8 @@ function App() {
                   customInput={<input className="input w-full mt-2" />}
                 />
               </div>
-              <div className="flex flex-col">
-                <p className="mb-2">Your schedule</p>
-                <Calendar />
-              </div>
               <button type="submit" className="btn">
-                Create Pet
+                Create User
               </button>
             </form>
           </div>
