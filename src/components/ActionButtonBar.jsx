@@ -1,10 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUtensils,
-  faBed,
-  faGamepad,
-} from "@fortawesome/free-solid-svg-icons";
-
 // eslint-disable-next-line react/prop-types
 export default function ActionButtonBar({ onFeed, onSleep, onPlay }) {
   return (
@@ -12,7 +5,7 @@ export default function ActionButtonBar({ onFeed, onSleep, onPlay }) {
       <div className="w-full mx-4 flex flex-col justify-center gap-4">
         <button className="action-button" onClick={onFeed}>
           <img
-            src="public/food-drink-milk.png"
+            src="/food-drink-milk.png"
             className="w-10 mx-1"
             alt="milk-img"
           />
@@ -20,7 +13,7 @@ export default function ActionButtonBar({ onFeed, onSleep, onPlay }) {
         </button>
         <button className="action-button" onClick={onSleep}>
           <img
-            src="public/weather-cresent-moon-stars.png"
+            src="/weather-cresent-moon-stars.png"
             className="w-10 mx-1"
             alt="sleep-img"
           />
@@ -28,7 +21,7 @@ export default function ActionButtonBar({ onFeed, onSleep, onPlay }) {
         </button>
         <button className="action-button" onClick={onPlay}>
           <img
-            src="public/business-products-magic-rabbit.png"
+            src="/business-products-magic-rabbit.png"
             className="w-10 mx-1"
             alt="play-img"
           />

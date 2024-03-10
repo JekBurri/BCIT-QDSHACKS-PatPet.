@@ -147,7 +147,7 @@ function App() {
                 className="action-button -bg--ternary w-20 h-20 ml-4"
               >
                 <img
-                  src="public/romance-love-letter-open.png"
+                  src="/romance-love-letter-open.png"
                   className="w-20"
                   alt="chat-img"
                 />
