@@ -63,11 +63,7 @@ function Chat() {
               <div className="flex flex-col mt-4">
                 <div className="flex items-center justify-end">
                   <p className="font-bold -text--primary text-lg">{username}</p>
-                  <img
-                    src="public/user-icon.png"
-                    className="w-11 ml-2"
-                    alt="user"
-                  />
+                  <img src="/user-icon.png" className="w-11 ml-2" alt="user" />
                 </div>
                 <div className="w-2/3 -bg--secondary mx-12 p-4 rounded-tl-3xl rounded-b-3xl min-h-20">
                   {msg.content}
@@ -76,11 +72,7 @@ function Chat() {
             ) : (
               <div className="flex flex-col mt-4">
                 <div className="flex items-center">
-                  <img
-                    src="public/pet-icon.png"
-                    className="w-11 mr-2"
-                    alt="pet"
-                  />
+                  <img src="/pet-icon.png" className="w-11 mr-2" alt="pet" />
                   <p className="font-bold -text--primary text-lg">{petname}</p>
                 </div>
                 <div className="w-2/3 -bg--on-ternary mx-12 p-4 rounded-tr-3xl rounded-b-3xl min-h-20">
