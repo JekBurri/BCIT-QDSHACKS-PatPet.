@@ -78,8 +78,9 @@ export default function Calendar() {
             <button type="submit" className="btn px-3 py-2">
               Add
             </button>
+            {/* Add ml-2 or a similar class for margin left */}
             <button
-              className="btn px-3 py-2"
+              className="btn px-3 py-2 ml-2" // Added ml-2 here
               onClick={() => setIsListOpen((prev) => !prev)}
             >
               {isListOpen ? "Close" : "List"}
