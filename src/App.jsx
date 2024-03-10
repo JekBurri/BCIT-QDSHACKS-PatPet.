@@ -2,13 +2,10 @@ import { useState, useEffect } from "react";
 import Chatbot from "./components/Chat";
 import PetCanvas from "./components/PetCanvas";
 import Calendar from "./components/Calendar";
-import DatePicker from "react-datepicker";
 
 function App() {
   const [username, setUsername] = useState("");
   const [petname, setPetname] = useState("");
-  const [programName, setProgramName] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCreatePetForm, setShowCreatePetForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     const storedUsername = localStorage.getItem("username");
@@ -25,79 +22,41 @@ function App() {
     e.preventDefault();
     localStorage.setItem("username", username);
     setIsLoggedIn(true);
-    localStorage.setItem("petname", petname);
-    localStorage.setItem("selectedImage", selectedImage);
-    setShowCreatePetForm(false);
-    localStorage.setItem("program", programName);
-    localStorage.setItem("graduation", selectedDate);
   };
 
+  const createPet = (e) => {
+    e.preventDefault();
+    localStorage.setItem("petname", petname);
+    localStorage.setItem("selectedImage", selectedImage); // Store the selected image
+    setShowCreatePetForm(false);
+  };
 
   const toggleCreatePetForm = () => {
     setShowCreatePetForm((prev) => !prev);
   };
 
   useEffect(() => {
-    setSelectedImage(localStorage.getItem("selectedImage")); // Retrieve the selected image from localStorage
+    const storedImage = localStorage.getItem("selectedImage");
+    setSelectedImage(storedImage || "/dog.svg");
   }, []);
 
   if (!isLoggedIn) {
     return (
-      <div className="h-svh w-full flex justify-center items-center">
-      <div className="login-container max-w-[700px] w-2/3 m-auto lg:w-1/2 ">
-        <h1>PATPET</h1>
-        <form onSubmit={handleLogin} className="flex flex-col space-y-8 mt-10">
-          <div className="flex flex-col">
-            <label>Your Name</label>
-            <input
-              type="text"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="input mt-2"
-              required
-            />
-          </div>
-          <div className="flex flex-col">
-            <label>Your Pet Name</label>
-            <input
-                type="text"
-                placeholder="Enter your pet's name"
-                value={petname}
-                onChange={(e) => setPetname(e.target.value)}
-                className="input mt-2"
-                required
-            />
-          </div>
-          <div className="flex flex-col">
-            <label>Your Program Name</label>
-            <input
-                type="text"
-                placeholder="Enter your program name"
-                value={programName}
-                onChange={(e) => setProgramName(e.target.value)}
-                className="input mt-2"
-                required
-            />
-          </div>
-          <div className="flex flex-col">
-            <label>Expected Graduation</label>
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              customInput={<input className="input w-full mt-2" />}
-            />
-          </div>
-          <div className="flex flex-col">
-            <p className="mb-2">Your schedule</p>
-            <Calendar />
-          </div>
-            <button type="submit" className="btn">
-              Create Pet
-            </button>
+      <div className="login-container max-w-xs mx-auto pt-8">
+        <form onSubmit={handleLogin} className="flex flex-col space-y-2">
+          <input
+            type="text"
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="input"
+            required
+          />
+          <button type="submit" className="btn">
+            Login
+          </button>
         </form>
       </div>
-    </div>
     );
   }
 
@@ -111,7 +70,6 @@ function App() {
           </button>
         )}
       </div>
-
       {showCreatePetForm && !localStorage.getItem("petname") && (
         <div className="login-container max-w-xs mx-auto pt-8">
           <form onSubmit={createPet} className="flex flex-col space-y-2">
