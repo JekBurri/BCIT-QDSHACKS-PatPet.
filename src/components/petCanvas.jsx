@@ -110,45 +110,7 @@ const PetCanvas = ({ initialImage }) => {
       }
     }, 5000);
     return () => clearInterval(specialEventInterval);
-  }, [specialEvent, imageChangedByEvent]);
-
-  useEffect(() => {
-    if (currentSpecialEvent) {
-      const eventText = Object.values(currentSpecialEvent)[1];
-      switch (eventText) {
-        case "I'm sleepy...":
-          setCurrentImage("/sleepy-cat.jpg");
-          setEventType("sleep");
-          break;
-        case "I'm hungry!":
-          setCurrentImage("/hungry-cat.png");
-          setEventType("feed");
-          break;
-        case "I'm thirsty!":
-          // Assuming you have a thirsty image
-          setCurrentImage("/thirsty-cat.png");
-          setEventType("water");
-          break;
-        case "Let's play!":
-          // Assuming you have a playful image
-          setCurrentImage("/playful-cat.png");
-          setEventType("play");
-          break;
-        default:
-          break;
-      }
-      setImageChangedByEvent(true);
-    }
-  }, [currentSpecialEvent]);
-
-  const handleAction = (action) => {
-    if (action === eventType) {
-      setCurrentImage(originalImage);
-      setImageChangedByEvent(false);
-      setCurrentSpecialEvent(null);
-      setEventType("");
-    }
-  };
+  }, [specialEvent]);
 
   return (
     <div className="card w-full">

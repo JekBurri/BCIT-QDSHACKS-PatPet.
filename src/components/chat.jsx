@@ -41,26 +41,44 @@ function Chat() {
   }
 
   return (
-    <div>
-      <h1>Chat with OpenAI</h1>
-      <div className="chat-history">
+    <div className="card -bg--ternary mt-8 p-4">
+      <h1 className="-text--on-ternary font-bold text-lg text-center">Message History</h1>
+      <div className="chat-history h-96 overflow-x-auto">
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.role}`}>
-            {msg.content}
+            {msg.role === "user" ? (
+              <div className="flex flex-col mt-4">
+                <div className="flex items-center justify-end">
+                  <p className="font-bold -text--primary text-lg">User</p>
+                  <img src="src/assets/user-icon.png" className="w-11 ml-2" alt="user" />
+                </div>
+                <div className="w-2/3  -bg--secondary mx-12 p-4 rounded-tl-3xl rounded-b-3xl min-h-20">{msg.content}</div>
+              </div>
+            ) : (
+              <div className="flex flex-col mt-4">
+                <div className="flex items-center">
+                  <img src="src/assets/pet-icon.png" className="w-11 mr-2" alt="pet" />
+                  <p className="font-bold -text--primary text-lg">Milro</p>
+                </div>
+                <div className="w-2/3 -bg--on-ternary  mx-12 p-4 rounded-tr-3xl rounded-b-3xl min-h-20">{msg.content}</div>
+              </div>
+            )}
           </div>
         ))}
       </div>
-      <form onSubmit={sendMessage}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message here..."
-        />
-        <button type="submit">Send</button>
-      </form>
+      <div>
+        <form onSubmit={sendMessage} className="flex gap-2 items-center">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message here..."
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
     </div>
-  );
+  )
 }
 
 export default Chat;
