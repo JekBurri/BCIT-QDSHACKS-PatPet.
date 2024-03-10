@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-import Chat from "./components/Chat";
-import PetCanvas from "./components/PetCanvas";
+// import Chat from "./components/Chat";
+import Pet from "./components/Pet.jsx";
 import Calendar from "./components/Calendar";
 import DatePicker from "react-datepicker";
 
@@ -82,7 +82,7 @@ function App() {
                       required
                     />
                   </div>
-                  <div>
+                  {/* <div>
                     <label
                       htmlFor="image"
                       className="-text--primary"
@@ -100,7 +100,7 @@ function App() {
                       <option value="/sleepy-cat.jpg">Sleepy Cat</option>
                       <option value="/hungry-cat.png">Hungry Cat</option>
                     </select>
-                  </div>
+                  </div> */}
                   <button type="submit" className="btn">
                     Confirm
                   </button>
@@ -109,7 +109,7 @@ function App() {
             )}
             {localStorage.getItem("petname") && selectedImage && (
               <div className="card h-2/3 px-10 flex flex-col justify-center items-center">
-                <PetCanvas initialImage={selectedImage} />
+                <Pet />
               </div>
             )}
             {showChatbot && (
