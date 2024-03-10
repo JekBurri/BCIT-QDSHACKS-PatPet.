@@ -46,7 +46,7 @@ export default function Calendar() {
           <DatePicker
             selected={selectedDate}
             onChange={(date) => setSelectedDate(date)}
-            customInput={<input className="input -text--primary/35" />}
+            customInput={<input className="input -text--primary" />}
           />
         </div>
         <div className="col-span-12 md:col-span-7">

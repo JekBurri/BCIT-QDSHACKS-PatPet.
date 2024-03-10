@@ -14,7 +14,7 @@
 
 @layer components {
     .action-button{
-        @apply py-2 px-4 mr-2 bg-white rounded-10px hover:bg-gray-200 text-sm md:py-3 md:px-6 md:text-base;
+        @apply py-2 px-4 mr-2 -bg--secondary -text--on-secondary rounded-10px hover:bg-gray-200 text-sm md:py-3 md:px-6 md:text-base;
     }
     .btn{
         @apply -bg--primary rounded-10px py-4 -text--on-primary;
@@ -22,4 +22,8 @@
     .input{
         @apply w-full border border-solid -border--primary py-2 px-4 rounded-10px drop-shadow-solid-drop;
     }
+    .card{
+        @apply -bg--background rounded-30px border border-solid -border--primary drop-shadow-solid-drop;
+    }
+    
 }

@@ -19,7 +19,7 @@
   ],
 
   "specialEvents": [
-    { "isActive": false, "normal": "I'm feeling good!" },
+    { "isActive": false, "thirsty": "I'm thirsty..." },
     { "isActive": false, "hungry": "I'm hungry!" },
     { "isActive": false, "sleepy": "I'm sleepy..." },
     { "isActive": false, "bored": "Let's play!" }
