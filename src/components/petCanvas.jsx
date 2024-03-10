@@ -12,8 +12,8 @@ const PetCanvas = ({ initialImage }) => {
   const [specialEvent, setSpecialEvent] = useState([]);
   const [currentSpecialEvent, setCurrentSpecialEvent] = useState(null);
   const [imageChangedByEvent, setImageChangedByEvent] = useState(false);
-  const [currentImage, setCurrentImage] = useState(initialImage || "/dog.svg");
-  const originalImage = initialImage || "/dog.svg";
+  const [currentImage, setCurrentImage] = useState(initialImage || "/cat.svg");
+  const originalImage = initialImage || "/cat.svg";
   const [eventType, setEventType] = useState("");
 
   useEffect(() => {
@@ -118,18 +118,15 @@ const PetCanvas = ({ initialImage }) => {
       const eventText = Object.values(currentSpecialEvent)[1];
       switch (eventText) {
         case "I'm sleepy...":
-          // replace this to new image
-          setCurrentImage("/sleepy-cat.jpg");
+          setCurrentImage("/sleep.svg");
           setEventType("sleep");
           break;
         case "I'm hungry!":
-          // replace this to new image
-          setCurrentImage("/hungry-cat.png");
+          setCurrentImage("/eat.svg");
           setEventType("feed");
           break;
         case "Let's play!":
-          // replace this to new image
-          setCurrentImage("/hungry-cat.png");
+          setCurrentImage("/cat-play.svg");
           setEventType("play");
           break;
         default:

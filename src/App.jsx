@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Chat from "./components/Chat.jsx";
 import Calendar from "./components/Calendar";
 import DatePicker from "react-datepicker";
-import PetCanvas from "./components/PetCanvas";
+import PetCanvas from "./components/PetCanvas.jsx";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -43,7 +43,7 @@ function App() {
 
   useEffect(() => {
     const storedImage = localStorage.getItem("selectedImage");
-    setSelectedImage(storedImage || "/dog.svg");
+    setSelectedImage(storedImage || "/cat.svg");
 
     const storedPetName = localStorage.getItem("petname");
     setPetname(storedPetName);
@@ -60,58 +60,56 @@ function App() {
 
   return (
     <div className="max-w-[1200px] min-w-[400px] h-screen mx-auto px-12 py-10">
-      <div className="">
-        <h1></h1>
+      <div>
         {isLoggedIn ? (
           <div className="w-full h-screen flex flex-col gap-6">
             <div className="card py-6 px-14 flex justify-between items-center font-bold text-3xl">
               <p>Welcome, {localStorage.getItem("username")}!</p>
-              {!localStorage.getItem("petname") && (
-                <button
-                  onClick={toggleCreatePetForm}
-                  className="btn text-base font-normal py-2 px-4 "
-                >
-                  {showCreatePetForm ? "Cancel" : "Create Pet"}
-                </button>
-              )}
+              <div className="flex items-center">
+                <p className="text-sm -text--primary">
+                  Graduation:{" "}
+                  {new Date(
+                    localStorage.getItem("graduation")
+                  ).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+                {!localStorage.getItem("petname") && (
+                  <button
+                    onClick={toggleCreatePetForm}
+                    className="btn text-base font-normal py-2 px-4 ml-4"
+                  >
+                    {showCreatePetForm ? "Cancel" : "Create Pet"}
+                  </button>
+                )}
+              </div>
             </div>
             {showCreatePetForm && !localStorage.getItem("petname") && (
-              <div className="login-container max-w-xs mx-auto pt-8">
-                <form onSubmit={createPet} className="flex flex-col space-y-2">
-                  <input
-                    type="text"
-                    placeholder="Enter your pet's name"
-                    value={petname}
-                    onChange={(e) => setPetname(e.target.value)}
-                    className="input"
-                    required
-                  />
-                  <label
-                    htmlFor="image"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Select the initial image for your pet:
-                  </label>
-                  <select
-                    id="image"
-                    value={selectedImage}
-                    onChange={(e) => setSelectedImage(e.target.value)}
-                    className="input"
-                    required
-                  >
-                    {/* replace image files below */}
-                    <option value="/dog.svg">Dog</option>
-                    <option value="/sleepy-cat.jpg">Sleepy Cat</option>
-                    <option value="/hungry-cat.png">Hungry Cat</option>
-                  </select>
+              <div className="card h-2/3 px-10 flex flex-col justify-center items-center">
+                <form onSubmit={createPet} className="flex flex-col space-y-4">
+                  <div className="mb-4">
+                    <label>Pet Name</label>
+                    <input
+                      type="text"
+                      placeholder="Enter your pet's name"
+                      value={petname}
+                      onChange={(e) => setPetname(e.target.value)}
+                      className="input"
+                      required
+                    />
+                  </div>
+                  {/* Image selection is removed and the selected image value can be set in the createPet function or state */}
                   <button type="submit" className="btn">
                     Confirm
                   </button>
                 </form>
               </div>
             )}
+
             {localStorage.getItem("petname") && selectedImage && (
-              <div>
+              <div className="card h-2/3 px-10 flex flex-col justify-center items-center">
                 <PetCanvas initialImage={selectedImage} />
               </div>
             )}
@@ -159,6 +157,7 @@ function App() {
           </div>
         ) : (
           <div className="w-full md:w-3/4 mx-auto">
+            <img src="logo.svg" className="w-72 mx-auto" alt="logo-image" />
             <form
               onSubmit={handleLogin}
               className="flex flex-col space-y-8 mt-10"

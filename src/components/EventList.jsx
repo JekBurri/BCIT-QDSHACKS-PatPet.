@@ -18,11 +18,13 @@ export default function EventList() {
   }, []);
 
   return (
-    <div className="absolute card top-10 left-10 w-2/3 h-2/3">
+    <div className="absolute card top-10 left-10 w-2/3 h-2/3 overflow-auto p-5">
       {events.length > 0 ? (
-        <ul>
+        <ul className="space-y-2">
           {events.map((event, index) => (
-            <li key={index}>{`${event.date}: ${event.title}`}</li>
+            <li key={index} className="pl-4 pt-2">
+              {`${event.date}: ${event.title}`}
+            </li>
           ))}
         </ul>
       ) : (

@@ -52,15 +52,13 @@ export default function Calendar() {
   useEffect(() => {
     const storedEvents = localStorage.getItem("events");
     setEvents(storedEvents);
-
   }, []);
-  
 
   return (
     <div className="flex flex-col gap-4 w-full">
       <form onSubmit={addEvent} className="grid grid-cols-12 gap-2">
         <div className="col-span-12 md:col-span-5">
-        <p>Date</p>
+          <p>Date</p>
           <DatePicker
             selected={selectedDate}
             onChange={(date) => setSelectedDate(date)}
@@ -80,15 +78,16 @@ export default function Calendar() {
             <button type="submit" className="btn px-3 py-2">
               Add
             </button>
+            <button
+              className="btn px-3 py-2"
+              onClick={() => setIsListOpen((prev) => !prev)}
+            >
+              {isListOpen ? "Close" : "List"}
+            </button>
+            {isListOpen && <EventList events={events} />}
           </div>
         </div>
-        
       </form>
-      <div>
-        <h2>Events:</h2>
-        <button className="btn" onClick={() => setIsListOpen(pre => !pre)}>View events</button>
-          {isListOpen ? <EventList events={events} /> : (<div></div>)}
-      </div>
     </div>
   );
 }

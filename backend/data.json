@@ -1,51 +1,35 @@
 {
   "events": [
     {
-      "date": "2024-03-09",
+      "date": "2024-03-12",
       "title": "reading week is coming next week! yay!"
     },
     {
-      "date": "2024-03-09",
-      "title": "this is fun"
+      "date": "2024-03-18",
+      "title": "readings"
     },
     {
-      "date": "2024-03-09",
-      "title": "exams are over"
+      "date": "2024-03-25",
+      "title": "lab 3 due"
     },
     {
-      "date": "2024-03-14",
-      "title": "hi this is new"
+      "date": "2024-04-1",
+      "title": "April Fool's Day"
     },
     {
-      "date": "2024-03-10",
-      "title": "cfdfxxfgh"
+      "date": "2024-04-4",
+      "title": "quiz"
     },
     {
-      "date": "2024-03-10",
-      "title": "dxhcfjcghc"
-    },
-    {
-      "date": "2024-03-10",
-      "title": "hello"
+      "date": "2024-04-10",
+      "title": "final assignment in 2 weeks"
     },
     {
       "date": "2024-03-10",
-      "title": "hi"
-    },
-    {
-      "date": "2024-03-10",
-      "title": "l;kjlk;j"
-    },
-    {
-      "date": "2024-03-10",
-      "title": "l;kl;j"
+      "title": "it's my birth day today"
     }
   ],
   "specialEvents": [
-    {
-      "isActive": false,
-      "thirsty": "I'm thirsty..."
-    },
     {
       "isActive": false,
       "hungry": "I'm hungry!"
