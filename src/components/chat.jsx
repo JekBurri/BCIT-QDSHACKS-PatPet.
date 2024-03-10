@@ -6,7 +6,7 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true,
 });
 
-function Chat() {
+function Chat({petname, username}) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
     { role: "system", content: "hello" },
@@ -49,16 +49,16 @@ function Chat() {
             {msg.role === "user" ? (
               <div className="flex flex-col mt-4">
                 <div className="flex items-center justify-end">
-                  <p className="font-bold -text--primary text-lg">User</p>
-                  <img src="src/assets/user-icon.png" className="w-11 ml-2" alt="user" />
+                  <p className="font-bold -text--primary text-lg">{username}</p>
+                  <img src="public/user-icon.png" className="w-11 ml-2" alt="user" />
                 </div>
                 <div className="w-2/3  -bg--secondary mx-12 p-4 rounded-tl-3xl rounded-b-3xl min-h-20">{msg.content}</div>
               </div>
             ) : (
               <div className="flex flex-col mt-4">
                 <div className="flex items-center">
-                  <img src="src/assets/pet-icon.png" className="w-11 mr-2" alt="pet" />
-                  <p className="font-bold -text--primary text-lg">Milro</p>
+                  <img src="public/pet-icon.png" className="w-11 mr-2" alt="pet" />
+                  <p className="font-bold -text--primary text-lg">{petname}</p>
                 </div>
                 <div className="w-2/3 -bg--on-ternary  mx-12 p-4 rounded-tr-3xl rounded-b-3xl min-h-20">{msg.content}</div>
               </div>
@@ -73,8 +73,9 @@ function Chat() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message here..."
+            className="input"
           />
-          <button type="submit">Send</button>
+          <button type="submit" className="btn px-4 py-2">Send</button>
         </form>
       </div>
     </div>

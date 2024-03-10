@@ -151,9 +151,9 @@ const PetCanvas = ({ initialImage }) => {
   };
 
   return (
-    <div className="card w-full">
-      <canvas ref={canvasRef} width={1000} height={300}></canvas>
-      <div>
+    <div className="w-full">
+      <canvas ref={canvasRef} width={600} height={600}></canvas>
+      <div className="absolute bottom-6 left-4">
         <ActionButtonBar
           onWater={() => handleAction("water")}
           onFeed={() => handleAction("feed")}

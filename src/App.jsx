@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import Chatbot from "./components/Chat";
+
+import Chat from "./components/Chat";
 import PetCanvas from "./components/PetCanvas";
 import Calendar from "./components/Calendar";
 import DatePicker from "react-datepicker";
@@ -43,50 +44,63 @@ function App() {
   useEffect(() => {
     const storedImage = localStorage.getItem("selectedImage");
     setSelectedImage(storedImage || "/dog.svg");
+
+    const storedPetName = localStorage.getItem("petname");
+    setPetname(storedPetName);
+
+    const storedUserName = localStorage.getItem("username");
+    setUsername(storedUserName);
+
   }, []);
 
+  
   return (
-    <div className="h-svh w-full flex justify-center items-center">
-      <div className="login-container max-w-[700px] w-2/3 m-auto lg:w-1/2 ">
-        <h1>PATPET</h1>
+    <div className="max-w-[1200px] min-w-[400px] h-screen mx-auto px-12 py-10">
+      <div className="">
+        <h1></h1>
         {isLoggedIn ? (
-          <div>
-            <div className="card py-4 px-14 font-bold text-3xl">
+          <div className="w-full h-screen flex flex-col gap-6">
+            <div className="card py-6 px-14 flex justify-between items-center font-bold text-3xl">
               <p>Welcome, {localStorage.getItem("username")}!</p>
               {!localStorage.getItem("petname") && (
-                <button onClick={toggleCreatePetForm} className="btn">
+                <button onClick={toggleCreatePetForm} className="btn text-base font-normal py-2 px-4 ">
                   {showCreatePetForm ? "Cancel" : "Create Pet"}
                 </button>
               )}
             </div>
             {showCreatePetForm && !localStorage.getItem("petname") && (
-              <div className="login-container max-w-xs mx-auto pt-8">
-                <form onSubmit={createPet} className="flex flex-col space-y-2">
-                  <input
-                    type="text"
-                    placeholder="Enter your pet's name"
-                    value={petname}
-                    onChange={(e) => setPetname(e.target.value)}
-                    className="input"
-                    required
-                  />
-                  <label
-                    htmlFor="image"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Select the initial image for your pet:
-                  </label>
-                  <select
-                    id="image"
-                    value={selectedImage}
-                    onChange={(e) => setSelectedImage(e.target.value)}
-                    className="input"
-                    required
-                  >
-                    <option value="/dog.svg">Dog</option>
-                    <option value="/sleepy-cat.jpg">Sleepy Cat</option>
-                    <option value="/hungry-cat.png">Hungry Cat</option>
-                  </select>
+              <div className="card h-2/3 px-10 flex flex-col justify-center items-center">
+                <form onSubmit={createPet} className="flex flex-col space-y-4">
+                  <div className="mb-4">
+                    <label>Pet Name</label>
+                    <input
+                      type="text"
+                      placeholder="Enter your pet's name"
+                      value={petname}
+                      onChange={(e) => setPetname(e.target.value)}
+                      className="input"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="image"
+                      className="-text--primary"
+                    >
+                      Select the initial image for your pet:
+                    </label>
+                    <select
+                      id="image"
+                      value={selectedImage}
+                      onChange={(e) => setSelectedImage(e.target.value)}
+                      className="input"
+                      required
+                    >
+                      <option value="/dog.svg">Dog</option>
+                      <option value="/sleepy-cat.jpg">Sleepy Cat</option>
+                      <option value="/hungry-cat.png">Hungry Cat</option>
+                    </select>
+                  </div>
                   <button type="submit" className="btn">
                     Confirm
                   </button>
@@ -94,7 +108,7 @@ function App() {
               </div>
             )}
             {localStorage.getItem("petname") && selectedImage && (
-              <div>
+              <div className="card h-2/3 px-10 flex flex-col justify-center items-center">
                 <PetCanvas initialImage={selectedImage} />
               </div>
             )}
@@ -121,64 +135,66 @@ function App() {
                       ></path>
                     </svg>
                   </button>
-                  <Chatbot />
+                  <Chat petname={petname} username={username}/>
                 </div>
               </div>
             )}
-            <button
-              onClick={toggleChatbot}
-              className="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full z-40"
-            >
-              Chat with your pet
-            </button>
-
-            <div>
+            <div className="flex w-full justify-between">
               <Calendar />
+              <button
+              onClick={toggleChatbot}
+              className="action-button -bg--ternary w-20 h-20 ml-4"
+              >
+                <img src="public/romance-love-letter-open.png" className='w-20' alt="chat-img"/>
+              Chat
+              </button>
             </div>
           </div>
         ) : (
-          <form
-            onSubmit={handleLogin}
-            className="flex flex-col space-y-8 mt-10"
-          >
-            <div className="flex flex-col">
-              <label>Your Name</label>
-              <input
-                type="text"
-                placeholder="Enter your username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="input mt-2"
-                required
-              />
-            </div>
-            <div className="flex flex-col">
-              <label>Your Program Name</label>
-              <input
-                type="text"
-                placeholder="Enter your program name"
-                value={programName}
-                onChange={(e) => setProgramName(e.target.value)}
-                className="input mt-2"
-                required
-              />
-            </div>
-            <div className="flex flex-col">
-              <label>Expected Graduation</label>
-              <DatePicker
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                customInput={<input className="input w-full mt-2" />}
-              />
-            </div>
-            <div className="flex flex-col">
-              <p className="mb-2">Your schedule</p>
-              <Calendar />
-            </div>
-            <button type="submit" className="btn">
-              Create Pet
-            </button>
-          </form>
+          <div className="w-full md:w-3/4 mx-auto">
+            <form
+              onSubmit={handleLogin}
+              className="flex flex-col space-y-8 mt-10"
+            >
+              <div className="flex flex-col">
+                <label>Your Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="input mt-2"
+                  required
+                />
+              </div>
+              <div className="flex flex-col">
+                <label>Your Program Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter your program name"
+                  value={programName}
+                  onChange={(e) => setProgramName(e.target.value)}
+                  className="input mt-2"
+                  required
+                />
+              </div>
+              <div className="flex flex-col">
+                <label>Expected Graduation</label>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  customInput={<input className="input w-full mt-2" />}
+                />
+              </div>
+              <div className="flex flex-col">
+                <p className="mb-2">Your schedule</p>
+                <Calendar />
+              </div>
+              <button type="submit" className="btn">
+                Create Pet
+              </button>
+            </form>
+          </div>
         )}
       </div>
     </div>

@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
+import EventList from "./EventList";
 
 export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [event, setEvent] = useState("");
   const [events, setEvents] = useState({});
+  const [isListOpen, setIsListOpen] = useState(false);
+
+  useEffect(() => {
+    const storedEvents = localStorage.getItem("events");
+    if (storedEvents) {
+      setEvents(JSON.parse(storedEvents));
+    }
+  }, []);
 
   const addEvent = async (e) => {
     e.preventDefault();
@@ -20,10 +29,12 @@ export default function Calendar() {
       });
 
       console.log("Event added successfully:", response.data);
-      setEvents((prevEvents) => ({
-        ...prevEvents,
+      const updatedEvents = {
+        ...events,
         [dateStr]: event,
-      }));
+      };
+      setEvents(updatedEvents);
+      persistEvents(updatedEvents);
       setEvent("");
     } catch (error) {
       console.error("Error adding event:", error);
@@ -38,8 +49,15 @@ export default function Calendar() {
     persistEvents(events);
   }, [events]);
 
+  useEffect(() => {
+    const storedEvents = localStorage.getItem("events");
+    setEvents(storedEvents);
+
+  }, []);
+  
+
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       <form onSubmit={addEvent} className="grid grid-cols-12 gap-2">
         <div className="col-span-12 md:col-span-5">
         <p>Date</p>
@@ -66,6 +84,11 @@ export default function Calendar() {
         </div>
         
       </form>
+      <div>
+        <h2>Events:</h2>
+        <button className="btn" onClick={() => setIsListOpen(pre => !pre)}>View events</button>
+          {isListOpen ? <EventList events={events} /> : (<div></div>)}
+      </div>
     </div>
   );
 }
