@@ -61,54 +61,58 @@ function App() {
   }
 
   return (
-    <div className="max-w-[1200px] mx-auto px-12 py-10 flex flex-col gap-6">
+    <div className="max-w-[1200px] h-screen mx-auto px-12 py-10 flex flex-col gap-6">
       <div className="card py-4 px-14 font-bold text-3xl">
         <p>Welcome, {localStorage.getItem("username")}!</p>
+        
+      </div>
+      <div className="card h-4/5 flex flex-col justify-center items-center">
+        
+        {showCreatePetForm && !localStorage.getItem("petname") && (
+          <div className="login-container max-w-xs mx-auto pt-8">
+            <form onSubmit={createPet} className="flex flex-col space-y-2">
+              <input
+                type="text"
+                placeholder="Enter your pet's name"
+                value={petname}
+                onChange={(e) => setPetname(e.target.value)}
+                className="input"
+                required
+              />
+              <label
+                htmlFor="image"
+                className="text-sm font-medium text-gray-700"
+              >
+                Select the initial image for your pet:
+              </label>
+              <select
+                id="image"
+                value={selectedImage}
+                onChange={(e) => setSelectedImage(e.target.value)}
+                className="input"
+                required
+              >
+                <option value="/dog.svg">Dog</option>
+                <option value="/sleepy-cat.jpg">Sleepy Cat</option>
+                <option value="/hungry-cat.png">Hungry Cat</option>
+              </select>
+              <button type="submit" className="btn">
+                Confirm
+              </button>
+            </form>
+          </div>
+        )}
+        {localStorage.getItem("petname") && selectedImage && (
+          <div>
+            <PetCanvas initialImage={selectedImage} />
+          </div>
+        )}
         {!localStorage.getItem("petname") && (
           <button onClick={toggleCreatePetForm} className="btn">
             {showCreatePetForm ? "Cancel" : "Create Pet"}
           </button>
         )}
       </div>
-      {showCreatePetForm && !localStorage.getItem("petname") && (
-        <div className="login-container max-w-xs mx-auto pt-8">
-          <form onSubmit={createPet} className="flex flex-col space-y-2">
-            <input
-              type="text"
-              placeholder="Enter your pet's name"
-              value={petname}
-              onChange={(e) => setPetname(e.target.value)}
-              className="input"
-              required
-            />
-            <label
-              htmlFor="image"
-              className="text-sm font-medium text-gray-700"
-            >
-              Select the initial image for your pet:
-            </label>
-            <select
-              id="image"
-              value={selectedImage}
-              onChange={(e) => setSelectedImage(e.target.value)}
-              className="input"
-              required
-            >
-              <option value="/dog.svg">Dog</option>
-              <option value="/sleepy-cat.jpg">Sleepy Cat</option>
-              <option value="/hungry-cat.png">Hungry Cat</option>
-            </select>
-            <button type="submit" className="btn">
-              Confirm
-            </button>
-          </form>
-        </div>
-      )}
-      {localStorage.getItem("petname") && selectedImage && (
-        <div>
-          <PetCanvas initialImage={selectedImage} />
-        </div>
-      )}
       {showChatbot && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
           <div className="relative bg-white p-6 rounded shadow-lg max-w-md w-full">
