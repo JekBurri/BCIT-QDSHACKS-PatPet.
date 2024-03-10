@@ -124,14 +124,14 @@ const PetCanvas = ({ initialImage }) => {
           setCurrentImage("/hungry-cat.png");
           setEventType("feed");
           break;
-        case "I'm thirsty!":
+        case "I'm thirsty...":
           // Assuming you have a thirsty image
-          setCurrentImage("/thirsty-cat.png");
+          setCurrentImage("/sleepy-cat.jpg");
           setEventType("water");
           break;
         case "Let's play!":
           // Assuming you have a playful image
-          setCurrentImage("/playful-cat.png");
+          setCurrentImage("/hungry-cat.png");
           setEventType("play");
           break;
         default:
