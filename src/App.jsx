@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 
-// import Chat from "./components/Chat";
-import Pet from "./components/Pet.jsx";
+import Chat from "./components/Chat.jsx";
 import Calendar from "./components/Calendar";
 import DatePicker from "react-datepicker";
+import PetCanvas from "./components/PetCanvas";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -25,6 +25,8 @@ function App() {
   const handleLogin = (e) => {
     e.preventDefault();
     localStorage.setItem("username", username);
+    localStorage.setItem("program", programName);
+    localStorage.setItem("graduation", selectedDate);
     setIsLoggedIn(true);
   };
 
@@ -33,8 +35,6 @@ function App() {
     localStorage.setItem("petname", petname);
     localStorage.setItem("selectedImage", selectedImage);
     setShowCreatePetForm(false);
-    localStorage.setItem("program", programName);
-    localStorage.setItem("graduation", selectedDate);
   };
 
   const toggleCreatePetForm = () => {
@@ -50,6 +50,12 @@ function App() {
 
     const storedUserName = localStorage.getItem("username");
     setUsername(storedUserName);
+
+    const storedProgramName = localStorage.getItem("program");
+    setProgramName(storedProgramName);
+
+    const storedGraduation = localStorage.getItem("graduation");
+    setSelectedDate(storedGraduation);
   }, []);
 
   return (
@@ -70,35 +76,34 @@ function App() {
               )}
             </div>
             {showCreatePetForm && !localStorage.getItem("petname") && (
-              <div className="card h-2/3 px-10 flex flex-col justify-center items-center">
-                <form onSubmit={createPet} className="flex flex-col space-y-4">
-                  <div className="mb-4">
-                    <label>Pet Name</label>
-                    <input
-                      type="text"
-                      placeholder="Enter your pet's name"
-                      value={petname}
-                      onChange={(e) => setPetname(e.target.value)}
-                      className="input"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="image" className="-text--primary">
-                      Select the initial image for your pet:
-                    </label>
-                    <select
-                      id="image"
-                      value={selectedImage}
-                      onChange={(e) => setSelectedImage(e.target.value)}
-                      className="input"
-                      required
-                    >
-                      <option value="/dog.svg">Dog</option>
-                      <option value="/sleepy-cat.jpg">Sleepy Cat</option>
-                      <option value="/hungry-cat.png">Hungry Cat</option>
-                    </select>
-                  </div>
+              <div className="login-container max-w-xs mx-auto pt-8">
+                <form onSubmit={createPet} className="flex flex-col space-y-2">
+                  <input
+                    type="text"
+                    placeholder="Enter your pet's name"
+                    value={petname}
+                    onChange={(e) => setPetname(e.target.value)}
+                    className="input"
+                    required
+                  />
+                  <label
+                    htmlFor="image"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Select the initial image for your pet:
+                  </label>
+                  <select
+                    id="image"
+                    value={selectedImage}
+                    onChange={(e) => setSelectedImage(e.target.value)}
+                    className="input"
+                    required
+                  >
+                    {/* replace image files below */}
+                    <option value="/dog.svg">Dog</option>
+                    <option value="/sleepy-cat.jpg">Sleepy Cat</option>
+                    <option value="/hungry-cat.png">Hungry Cat</option>
+                  </select>
                   <button type="submit" className="btn">
                     Confirm
                   </button>
@@ -106,16 +111,17 @@ function App() {
               </div>
             )}
             {localStorage.getItem("petname") && selectedImage && (
-              <div className="card h-2/3 px-10 flex flex-col justify-center items-center">
-                <Pet />
+              <div>
+                <PetCanvas initialImage={selectedImage} />
               </div>
             )}
             {showChatbot && (
               <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
-                <div className="relative bg-white p-6 rounded shadow-lg max-w-md w-full">
+                <div className="relative p-6 max-w-md w-full">
+                  <Chat petname={petname} username={username} />
                   <button
                     onClick={toggleChatbot}
-                    className="absolute top-0 right-0 mt-4 mr-4 bg-transparent text-gray-700 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                    className="absolute top-0 right-0 mt-4 mr-4 bg-transparent text-white hover:text-gray-300 rounded-lg text-sm p-1.5 inline-flex items-center"
                     title="Close"
                   >
                     <svg
@@ -133,7 +139,6 @@ function App() {
                       ></path>
                     </svg>
                   </button>
-                  <Chat petname={petname} username={username} />
                 </div>
               </div>
             )}
@@ -188,12 +193,8 @@ function App() {
                   customInput={<input className="input w-full mt-2" />}
                 />
               </div>
-              <div className="flex flex-col">
-                <p className="mb-2">Your schedule</p>
-                <Calendar />
-              </div>
               <button type="submit" className="btn">
-                Create Pet
+                Create User
               </button>
             </form>
           </div>

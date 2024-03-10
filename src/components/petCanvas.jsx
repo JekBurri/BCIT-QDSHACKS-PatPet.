@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import ActionButtonBar from "./ActionButtonBar";
 
+// eslint-disable-next-line react/prop-types
 const PetCanvas = ({ initialImage }) => {
   const canvasRef = useRef(null);
   const [dogPosition, setDogPosition] = useState({ x: 50, y: 50 });
@@ -68,8 +69,8 @@ const PetCanvas = ({ initialImage }) => {
   useEffect(() => {
     const handleCanvasClick = (event) => {
       const rect = canvasRef.current.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      event.clientX - rect.left;
+      event.clientY - rect.top;
 
       if (events.length > 0) {
         const randomIndex = Math.floor(Math.random() * events.length);
@@ -117,20 +118,17 @@ const PetCanvas = ({ initialImage }) => {
       const eventText = Object.values(currentSpecialEvent)[1];
       switch (eventText) {
         case "I'm sleepy...":
+          // replace this to new image
           setCurrentImage("/sleepy-cat.jpg");
           setEventType("sleep");
           break;
         case "I'm hungry!":
+          // replace this to new image
           setCurrentImage("/hungry-cat.png");
           setEventType("feed");
           break;
-        case "I'm thirsty...":
-          // Assuming you have a thirsty image
-          setCurrentImage("/sleepy-cat.jpg");
-          setEventType("water");
-          break;
         case "Let's play!":
-          // Assuming you have a playful image
+          // replace this to new image
           setCurrentImage("/hungry-cat.png");
           setEventType("play");
           break;
@@ -151,15 +149,16 @@ const PetCanvas = ({ initialImage }) => {
   };
 
   return (
-    <div className="w-full">
-      <canvas ref={canvasRef} width={600} height={600}></canvas>
-      <div className="absolute bottom-6 left-4">
+    <div className="flex w-full items-start">
+      <div className="p-4">
         <ActionButtonBar
-          onWater={() => handleAction("water")}
           onFeed={() => handleAction("feed")}
           onSleep={() => handleAction("sleep")}
           onPlay={() => handleAction("play")}
         />
+      </div>
+      <div className="relative">
+        <canvas ref={canvasRef} width={600} height={500}></canvas>
       </div>
     </div>
   );
