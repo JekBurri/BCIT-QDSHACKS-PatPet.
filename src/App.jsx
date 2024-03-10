@@ -50,10 +50,8 @@ function App() {
 
     const storedUserName = localStorage.getItem("username");
     setUsername(storedUserName);
-
   }, []);
 
-  
   return (
     <div className="max-w-[1200px] min-w-[400px] h-screen mx-auto px-12 py-10">
       <div className="">
@@ -63,7 +61,10 @@ function App() {
             <div className="card py-6 px-14 flex justify-between items-center font-bold text-3xl">
               <p>Welcome, {localStorage.getItem("username")}!</p>
               {!localStorage.getItem("petname") && (
-                <button onClick={toggleCreatePetForm} className="btn text-base font-normal py-2 px-4 ">
+                <button
+                  onClick={toggleCreatePetForm}
+                  className="btn text-base font-normal py-2 px-4 "
+                >
                   {showCreatePetForm ? "Cancel" : "Create Pet"}
                 </button>
               )}
@@ -82,11 +83,8 @@ function App() {
                       required
                     />
                   </div>
-                  {/* <div>
-                    <label
-                      htmlFor="image"
-                      className="-text--primary"
-                    >
+                  <div>
+                    <label htmlFor="image" className="-text--primary">
                       Select the initial image for your pet:
                     </label>
                     <select
@@ -100,7 +98,7 @@ function App() {
                       <option value="/sleepy-cat.jpg">Sleepy Cat</option>
                       <option value="/hungry-cat.png">Hungry Cat</option>
                     </select>
-                  </div> */}
+                  </div>
                   <button type="submit" className="btn">
                     Confirm
                   </button>
@@ -135,18 +133,22 @@ function App() {
                       ></path>
                     </svg>
                   </button>
-                  <Chat petname={petname} username={username}/>
+                  <Chat petname={petname} username={username} />
                 </div>
               </div>
             )}
             <div className="flex w-full justify-between">
               <Calendar />
               <button
-              onClick={toggleChatbot}
-              className="action-button -bg--ternary w-20 h-20 ml-4"
+                onClick={toggleChatbot}
+                className="action-button -bg--ternary w-20 h-20 ml-4"
               >
-                <img src="public/romance-love-letter-open.png" className='w-20' alt="chat-img"/>
-              Chat
+                <img
+                  src="public/romance-love-letter-open.png"
+                  className="w-20"
+                  alt="chat-img"
+                />
+                Chat
               </button>
             </div>
           </div>
