@@ -10,12 +10,10 @@ const PetCanvas = ({ initialImage }) => {
   const [events, setEvents] = useState([]);
   const [specialEvent, setSpecialEvent] = useState([]);
   const [currentSpecialEvent, setCurrentSpecialEvent] = useState(null);
-  const [currentImage, setCurrentImage] = useState("/dog.svg");
-  const originalImage = "/dog.svg";
-
-  useEffect(() => {
-    setCurrentImage(initialImage || "/dog.svg");
-  }, [initialImage]);
+  const [imageChangedByEvent, setImageChangedByEvent] = useState(false);
+  const [currentImage, setCurrentImage] = useState(initialImage || "/dog.svg");
+  const originalImage = initialImage || "/dog.svg";
+  const [eventType, setEventType] = useState("");
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -37,10 +35,10 @@ const PetCanvas = ({ initialImage }) => {
     const image = new Image();
     image.src = currentImage;
 
-    const drawDog = (img) => {
+    image.onload = () => {
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.drawImage(
-        img,
+        image,
         dogPosition.x,
         dogPosition.y,
         dogSize.width,
@@ -63,38 +61,13 @@ const PetCanvas = ({ initialImage }) => {
           dogPosition.x + dogSize.width + 10,
           dogPosition.y + dogSize.height / 2 + 20
         );
-
-        if (eventText === "I'm sleepy...") {
-          setCurrentImage("/sleepy-cat.jpg");
-        } else if (eventText === "I'm hungry!") {
-          setCurrentImage("/hungry-cat.png"); // Change the image to hungry-cat.png
-        }
       }
     };
+  }, [currentImage, dogPosition, randomEvent, currentSpecialEvent]);
 
-    image.onload = () => {
-      drawDog(image);
-    };
-
-    const moveDogRandomly = () => {
-      const deltaX = Math.floor(Math.random() * 20) - 10;
-      const deltaY = Math.floor(Math.random() * 20) - 10;
-
-      setDogPosition((prevPosition) => {
-        const newX = Math.min(
-          Math.max(prevPosition.x + deltaX, 0),
-          canvas.width - dogSize.width
-        );
-        const newY = Math.min(
-          Math.max(prevPosition.y + deltaY, 0),
-          canvas.height - dogSize.height
-        );
-        return { x: newX, y: newY };
-      });
-    };
-
+  useEffect(() => {
     const handleCanvasClick = (event) => {
-      const rect = canvas.getBoundingClientRect();
+      const rect = canvasRef.current.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
 
@@ -102,55 +75,91 @@ const PetCanvas = ({ initialImage }) => {
         const randomIndex = Math.floor(Math.random() * events.length);
         setRandomEvent(events[randomIndex]);
       }
-
-      if (
-        x >= dogPosition.x &&
-        x <= dogPosition.x + dogSize.width &&
-        y >= dogPosition.y &&
-        y <= dogPosition.y + dogSize.height
-      ) {
-        if (currentImage !== originalImage) {
-          setCurrentImage(originalImage);
-        }
-      }
     };
 
-    canvas.addEventListener("click", handleCanvasClick);
+    canvasRef.current.addEventListener("click", handleCanvasClick);
+    return () =>
+      canvasRef.current.removeEventListener("click", handleCanvasClick);
+  }, [events, dogPosition]);
+
+  useEffect(() => {
+    const moveDogRandomly = () => {
+      const deltaX = Math.floor(Math.random() * 20) - 10;
+      const deltaY = Math.floor(Math.random() * 20) - 10;
+      setDogPosition((prevPosition) => {
+        const newX = Math.min(
+          Math.max(prevPosition.x + deltaX, 0),
+          canvasRef.current.width - dogSize.width
+        );
+        const newY = Math.min(
+          Math.max(prevPosition.y + deltaY, 0),
+          canvasRef.current.height - dogSize.height
+        );
+        return { x: newX, y: newY };
+      });
+    };
     const intervalId = setInterval(moveDogRandomly, 1000);
-
-    return () => {
-      clearInterval(intervalId);
-      canvas.removeEventListener("click", handleCanvasClick);
-    };
-  }, [
-    dogPosition,
-    events,
-    randomEvent,
-    currentSpecialEvent,
-    currentImage,
-    originalImage,
-  ]);
+    return () => clearInterval(intervalId);
+  }, [dogSize]);
 
   useEffect(() => {
     const specialEventInterval = setInterval(() => {
-      if (specialEvent.length > 0) {
+      if (specialEvent.length > 0 && !imageChangedByEvent) {
         const randomIndex = Math.floor(Math.random() * specialEvent.length);
         setCurrentSpecialEvent(specialEvent[randomIndex]);
       }
     }, 5000);
-
     return () => clearInterval(specialEventInterval);
-  }, [specialEvent]);
+  }, [specialEvent, imageChangedByEvent]);
+
+  useEffect(() => {
+    if (currentSpecialEvent) {
+      const eventText = Object.values(currentSpecialEvent)[1];
+      switch (eventText) {
+        case "I'm sleepy...":
+          setCurrentImage("/sleepy-cat.jpg");
+          setEventType("sleep");
+          break;
+        case "I'm hungry!":
+          setCurrentImage("/hungry-cat.png");
+          setEventType("feed");
+          break;
+        case "I'm thirsty!":
+          // Assuming you have a thirsty image
+          setCurrentImage("/thirsty-cat.png");
+          setEventType("water");
+          break;
+        case "Let's play!":
+          // Assuming you have a playful image
+          setCurrentImage("/playful-cat.png");
+          setEventType("play");
+          break;
+        default:
+          break;
+      }
+      setImageChangedByEvent(true);
+    }
+  }, [currentSpecialEvent]);
+
+  const handleAction = (action) => {
+    if (action === eventType) {
+      setCurrentImage(originalImage);
+      setImageChangedByEvent(false);
+      setCurrentSpecialEvent(null);
+      setEventType("");
+    }
+  };
 
   return (
     <div className="card w-full">
-      <canvas
-        ref={canvasRef}
-        width={1000}
-        height={300}
-      ></canvas>
+      <canvas ref={canvasRef} width={1000} height={300}></canvas>
       <div>
-        <ActionButtonBar />
+        <ActionButtonBar
+          onWater={() => handleAction("water")}
+          onFeed={() => handleAction("feed")}
+          onSleep={() => handleAction("sleep")}
+          onPlay={() => handleAction("play")}
+        />
       </div>
     </div>
   );
