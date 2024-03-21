@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import Chat from "./components/Chat.jsx";
+import Chat from "./components/chat.jsx";
 import Calendar from "./components/Calendar";
 import DatePicker from "react-datepicker";
 import PetCanvas from "./components/PetCanvas.jsx";
