@@ -6,8 +6,10 @@ import "dotenv/config";
 const app = express();
 app.use(express.json());
 
-const PORT = 8000;
+const PORT = 3000;
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
+app.use(express.static(path.join(__dirname, "dist")));
+
 const DATA_FILE_PATH = path.join(__dirname, "data.json");
 
 const readData = () => {
@@ -47,6 +49,10 @@ app.get("/events", (req, res) => {
   } else {
     res.status(500).json({ error: "Failed to read events" });
   }
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 app.listen(PORT, () =>
