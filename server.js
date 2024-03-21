@@ -9,10 +9,8 @@ app.use(express.json());
 const PORT = 8000;
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-// Define the path to the dist directory
 const DIST_DIR_PATH = path.join(__dirname, "dist");
 
-// Serve the static files from the dist directory
 app.use(express.static(DIST_DIR_PATH));
 
 const DATA_FILE_PATH = path.join(__dirname, "data.json");
