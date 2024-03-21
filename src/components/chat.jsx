@@ -5,7 +5,6 @@ const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
 });
-console.log(import.meta.env.VITE_OPENAI_API_KEY);
 
 function Chat() {
   const [input, setInput] = useState("");
